@@ -1,0 +1,246 @@
+{% extends 'base.html' %} {% load static %}
+
+<!-- Other Block Starts -->
+{% block title %} BlogContent {% endblock title %} {% block meta_desc %} {% endblock meta_desc %}
+{% block meta_keyword%}
+{% endblock meta_keyword %}
+{% block image_name %}
+{{ user_info.userimage.url }}
+{% endblock image_name %}
+<!-- Other Block Ends -->
+
+<!-- Main Block Starts -->
+{% block body %}
+
+<main id="main" class="my-5">
+
+    <!-- ======= Blog Single Section ======= -->
+    <section id="blog" class="blog">
+        <div class="container" data-aos="fade-up">
+            <div class="row">
+                <div class="col-lg-8 entries">
+
+                    <!-- Start blog entry -->
+                    <article class="entry entry-single">
+
+                        <div class="entry-img">
+                            <img src="{{ blog.image.url }}" alt="" class="img-fluid" width="1296" height="440">
+                        </div>
+
+                        <h2 class="entry-title">
+                            <a href="#">{{ blog.title }}</a>
+                        </h2>
+
+                        <div class="entry-meta">
+                            <ul>
+                                <li class="d-flex align-items-center">
+                                    <i class="bi bi-person"></i>
+                                    <a href="#">
+                                        {{ blog.author.first_name | capfirst }}&nbsp;{{ blog.author.last_name | capfirst }}
+                                    </a>
+                                </li>
+                                <li class="d-flex align-items-center">
+                                    <i class="bi bi-clock"></i>
+                                    <a>
+                                        <time datetime="2020-01-01">
+                                            {{ blog.date }}
+                                        </time>
+                                    </a>
+                                </li>
+                                <li class="d-flex align-items-center">
+                                    <i class="bi bi-tags"></i>
+                                    <a>
+                                        {{ blog.category | capfirst }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="entry-content" style="padding-bottom: 1rem;">
+                            <p>
+                                {{ blog.content | safe }}
+                            </p>
+                        </div>
+
+                    </article>
+                    <!-- End blog entry -->
+
+                    <div class="blog-author d-flex align-items-center" id="author_details">
+                        <div class="image">
+                            <img src="{{ author.userimage.url }}" class="rounded-circle float-left" alt="">
+                        </div>
+                        <div>
+                            <h4>{{ author.username.first_name }}&nbsp;{{ author.username.last_name }}</h4>
+                            <div class="social-links">
+                                <a href="https://twitters.com/#"><i class="bi bi-twitter"></i></a>
+                                <a href="https://facebook.com/#"><i class="bi bi-facebook"></i></a>
+                                <a href="https://instagram.com/#"><i class="biu bi-instagram"></i></a>
+                            </div>
+                            <p>
+                                {{ author.userbio }}
+                            </p>
+                        </div>
+                    </div>
+                    <!-- End blog author bio -->
+
+                    <div class="blog-comments">
+
+                        <div class="reply-form" id="comment_form">
+                            <h4>
+                                Leave a comment
+                            </h4>
+                            <form action="{% url 'postcomment' %}" method='POST'>
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col form-group">
+                                        <input type="hidden" name="id_blog_no" value="{{ blog.id_no }}">
+                                        <input type="hidden" name="id_user_no" value="{{ userid.id_no }}">
+                                        <input type="hidden" name="parent_comment" value="">
+                                        <textarea name="comment" class="form-control" placeholder="Your Comment"
+                                            rows="7" cols="30" required></textarea>
+                                    </div>
+                                </div>
+
+                                <div class"form_submit" style="text-align: right;">
+                                    {% if user.is_authenticated %}
+                                    <button type="submit" class="btn btn-primary">
+                                        Post Comment
+                                    </button>
+                                    {% else %}
+                                    <button type="submit" class="btn btn-primary disabled">
+                                        Post Comment
+                                    </button>
+                                    <h5 style="margin-top: 1rem; text-align: center;">
+                                        Please login first for make a comment
+                                    </h5>
+                                    {% endif %}
+                                </div>
+                            </form>
+                        </div>
+
+                        {% if comment_count == 0 %}
+                        <h4 class="comments-count my-5">
+                            No Comment
+                        </h4>
+                        {% elif comment_count == 1 %}
+                        <h4 class="comments-count my-5">
+                            {{ comment_count}} Comment
+                        </h4>
+                        {% else %}
+                        <h4 class="comments-count my-5">
+                            {{ comment_count}} Comments
+                        </h4>
+                        {% endif %}
+                        {% for comment in comment_reply %}
+                            <div id="comment-{{ comment.0.id_no }}" class="comment">
+                                <div class="d-flex" style="box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); padding: 2rem;">
+                                    <div class="comment-img">
+                                        <img src="{{ comment.0.uploader.userimage.url }}" alt="" style="border-radius: 100%; width: 4rem;">
+                                    </div>
+                                    <div>
+                                        <h5>
+                                            <a>
+                                                {{ comment.0.uploader.username.first_name }}&nbsp;{{ comment.0.uploader.username.last_name }}
+                                            </a>
+                                            <a class="bi bi-reply-fill reply" 
+                                            style="cursor: pointer;"
+                                            data-bs-toggle="modal" data-bs-target="#replyform"
+                                            onclick="comment_id_sent({{comment.0.id_no}})">
+                                            &nbsp;Reply
+                                            </a>
+                                            {% if comment.0.uploader.username == request.user %}
+                                            <a href="{% url 'deletecomment' comment.0.id_no %}" class="bi bi-trash-fill reply" style="cursor: pointer;">
+                                                &nbsp;Delete
+                                            </a>
+                                            {% endif %}
+                                        </h5>
+                                        <time datetime="2020-01-01">{{ comment.0.date }}</time>
+                                        <i style="font-size: 20px; color: grey; padding-left: 1rem;">
+                                            {{ comment.0.comment }}
+                                        </i>
+                                    </div>
+                                </div>
+                                <!-- Reply-->
+                                {% for reply in comment.1 %}
+                                    <div id="comment-reply-{{ reply.id_no }}" class="comment comment-reply" style="padding-left: 10rem;">
+                                        <div class="d-flex" style="box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); padding: 2rem;">
+                                            <div class="comment-img">
+                                                <img src="{{ reply.uploader.userimage.url }}" alt="" style="border-radius: 100%; width: 4rem;">
+                                            </div>
+                                            <div>
+                                                <h5>
+                                                    <a>
+                                                        {{ reply.uploader.username.first_name }}&nbsp;{{ reply.uploader.username.last_name }}
+                                                    </a>
+                                                    {% if reply.uploader.username == request.user %}
+                                                    <a href="{% url 'deletecomment' reply.id_no %}" class="bi bi-trash-fill reply" style="cursor: pointer;">
+                                                        &nbsp;Delete
+                                                    </a>
+                                                    {% endif %}
+                                                </h5>
+                                                <time datetime="2020-01-01">{{ reply.date }}</time>
+                                                <i style="font-size: 20px; color: grey; padding-left: 1rem;">
+                                                    {{ reply.comment }}
+                                                </i>
+                                            </div>
+                                        </div>
+                                    </div><!-- End comment reply #1-->
+                                {% endfor %}
+                            </div><!-- End comment #1-->
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- End blog entries list -->
+                <div class="col-lg-4">
+
+                    {% include 'sidebar.html' %}
+
+                </div><!-- End blog sidebar -->
+            </div>
+        </div>
+        </div>
+    </section>
+    <!-- End Blog Single Section -->
+
+</main>
+
+<!-- Modal open -->
+<!-- Reply Form -->
+<div class="modal fade" id="replyform" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Reply Form</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{% url 'postcomment' %}" method='POST'>
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col form-group">
+                            <input type="hidden" name="id_blog_no" value="{{ blog.id_no }}">
+                            <input type="hidden" name="id_user_no" value="{{ userid.id_no }}">
+                            <input type="hidden" name="parent_comment" value="" id="parent_comment">
+                            <textarea name="comment" class="form-control" placeholder="Your Comment" rows="7" cols="30"
+                                required></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="Submit" class="btn btn-primary">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Model close -->
+
+<script>
+    function comment_id_sent(id) {
+        document.getElementById("parent_comment").value = id;
+    }
+</script>
+
+{% endblock body %}
+<!-- Main Block Ends -->

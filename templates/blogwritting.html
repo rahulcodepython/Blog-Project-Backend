@@ -1,0 +1,74 @@
+{% extends 'base.html' %} {% load static %}
+
+<!-- Other Block Starts -->
+{% block title %} Index {% endblock title %} {% block meta_desc %} {% endblock meta_desc %} {% block meta_keyword %} 
+{% endblock meta_keyword %} {% block image_name %}
+    {{ user_info.userimage.url }} 
+{% endblock image_name%}
+<!-- Other Block Ends -->
+
+<!-- Main Block Starts -->
+{% block body %}
+<main id="main">
+    <!-- ======= Registration Form Section ======= -->
+    <section id="blog_save_form" class="contact">
+
+        <div class="container" data-aos="fade-up" style="padding-top: 2rem;">
+
+            <header class="section-header">
+                <p>Add New Blog</p>
+            </header>
+
+            <div class="row gy-4">
+
+                <div class="col-lg-12">
+                    <!-- Registration Form -->
+                    <form action="{% url 'blog_upload' %}" method="POST" enctype='multipart/form-data' class="php-email-form">
+                        {% csrf_token %}
+                        <div class="row gy-4">
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" name="title" placeholder="Enter the title of the blog" required>
+                            </div>
+                            <div class="col-md-12">
+                                <select name="category" id="category" class="form-select" aria-label="Default select example" required>
+                                    <option value="General">General</option>
+                                    <option value="Tech">Tech</option>
+                                    <option value="Blog">Blog</option>
+                                    <option value="News">News</option>
+                                    <option value="Lifestyle">Lifestyle</option>
+                                    <option value="Education">Education</option>
+                                    <option value="Travel">Travel</option>
+                                    <option value="Art">Art</option>
+                                    <option value="Households">Households</option>
+                                    <option value="Others">Others</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="file" class="form-control" name="image" required>
+                            </div>
+                            <div class="col-md-12">
+                                <textarea class="form-control" name="content" id="content" rows="6" placeholder="Write the content of the blog." required></textarea>
+                            </div>
+                            <div class="col-md-12 text-center" id="submit_button">
+                                <button type='submit'>Upload</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- <button type="submit" onclick="example()">Register</button> -->
+    </section>
+    <!-- End Contact Section -->
+</main>
+
+<script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+
+<script>
+    CKEDITOR.replace( 'content' );
+</script>
+
+{% endblock body %}

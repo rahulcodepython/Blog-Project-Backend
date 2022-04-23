@@ -1,0 +1,47 @@
+<!-- ======= Login Form Section ======= -->
+<section id="login_form" class="contact">
+
+    <div class="container" data-aos="fade-up">
+
+        <header class="section-header">
+            <p>Login</p>
+        </header>
+
+        <div class="row gy-4">
+
+            <div class="col-lg-12">
+                <form action="{% url 'login_user' %}" method="POST" class="php-email-form">
+                    {% csrf_token %}
+                    <div class="row gy-4">
+
+                        <div class="col-md-12">
+                            <input type="email" class="form-control" name="email" placeholder="Your Email" required>
+                        </div>
+
+                        <div class="col-md-12">
+                            <input type="password" class="form-control" name="password" placeholder="Your Password" required>
+                        </div>
+
+                        <div class="col-md-12 text-center" id="button_submit">
+                            <button type="submit">Login</button>
+                        </div>
+
+                        <p style="text-align: center;">
+                            I do not have any account 
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#signup">
+                                Sign Up
+                            </button>
+                        </p>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- End Contact Section --> 

@@ -1,0 +1,166 @@
+<!-- ======= Registration Form Section ======= -->
+<section id="register_form" class="contact">
+
+    <div class="container" data-aos="fade-up">
+
+        <header class="section-header">
+            <p>Register</p>
+        </header>
+
+        <div class="row gy-4">
+
+            <div class="col-lg-12">
+                <!-- Registration Form -->
+                <form action="{% url 'register_user' %}" method="POST" class="php-email-form" enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    <div class="row gy-4">
+
+                        <div class="col-md-6">
+                            <input type="text" name="firstname" class="form-control" placeholder="Your First Name" id="firstname" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <input type="text" name="lastname" class="form-control" placeholder="Your Last Name" id="lastname" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <input type="text" name="username" class="form-control" placeholder="Your Username" id="username" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <input type="email" class="form-control" name="email" placeholder="Your Email" id="email" oninput="check_email()" required>
+                            <p id="email_help"> </p>
+                        </div>
+
+                        <div class="col-md-6">
+                            <input type="file" class="form-control" name="image" placeholder="Your Image" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <input type="number" class="form-control" name="number" placeholder="Your Mobile No." required>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="text" class="form-control" name="profession" placeholder="Your Profession" required>
+                        </div>
+
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="facebook" placeholder="Your Facebook Link">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="insta" placeholder="Your Instagrame Link">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="twitter" placeholder="Your Twitter Link">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="youtube" placeholder="Your Youtube Channel Link">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="linkedin" placeholder="Your Linkedin Link">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" name="website" placeholder="Your Website Link">
+                        </div>
+
+                        <div class="col-md-12">
+                            <textarea class="form-control" name="bio" rows="6" placeholder="Write something about you" required></textarea>
+                        </div>
+
+                        <div class="col-md-12">
+                            <textarea class="form-control" name="address" rows="6" placeholder="Write your address" required></textarea>
+                        </div>
+
+                        <div class="col-md-6">
+                            <input type="password" class="form-control" name="password" placeholder="Your Password" id="password" oninput="check_password_confirm()" required>
+                            <p id="password_help"> </p>
+                        </div>
+
+                        <div class="col-md-6">
+                            <input type="password" class="form-control" name="confpassword" placeholder="Your Confirm Password" id="confpassword" oninput="check_password_match()" required>
+                            <p id="confpassword_help"> </p>
+                        </div>
+
+                        <div class="col-md-12 text-center" id="submit_button">
+                            <button type='submit'>Register</button>
+                        </div>
+
+                        <p style="text-align: center;">
+                            I do have a account 
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#login">
+                                Login
+                            </button>
+                        </p>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- End Contact Section -->
+
+<script>
+    // This function will check if '@' and '.com' is present in the email or not
+    // The submit button will enable only when the email contains '@' and '.com'
+    function check_email() {
+        var email = document.getElementById("email").value;
+
+        if ((email.indexOf('@') > -1) && (email.indexOf(".com") > -1)) {
+            document.getElementById('email').style.border = '2px solid green';
+            document.getElementById('email_help').innerHTML = "";
+            document.getElementById('submit_button').innerHTML = "<button type='submit'>Register</button>"
+        } else {
+            document.getElementById('email').style.border = '2px solid red';
+            document.getElementById('email_help').innerHTML = "Your email is not valid. Your email must contain '@' and '.com'.";
+            document.getElementById('submit_button').innerHTML = "<button type='submit' class='btn disabled'>Register</button>"
+        }
+    }
+
+    // This function is match that the password and confirm passwords are same or not
+    // The submit button will enable only when the value of these two fields are same.
+    function check_password_match() {
+        var password = document.getElementById('password').value;
+        var confpassword = document.getElementById('confpassword').value;
+
+        if (password == confpassword) {
+            document.getElementById('confpassword').style.border = '2px solid green';
+            document.getElementById('confpassword_help').innerHTML = "";
+            document.getElementById('submit_button').innerHTML = "<button type='submit'>Register</button>"
+        } else {
+            document.getElementById('confpassword').style.border = '2px solid red';
+            document.getElementById('confpassword_help').innerHTML = "Your password is not matched.";
+            document.getElementById('submit_button').innerHTML = "<button type='submit' class='btn disabled'>Register</button>"
+        }
+    }
+
+    //  This function says that user can not use his firstname, lastname, username as his password
+    // The submit button will disable if the values of these fields match with the password
+    function check_password_confirm() {
+        firstname = document.getElementById('firstname').value;
+        lastname = document.getElementById('lastname').value;
+        username = document.getElementById('username').value;
+        password = document.getElementById('password').value;
+
+        if (password.length < 8) {
+            document.getElementById('password').style.border = '2px solid red';
+            document.getElementById('password_help').innerHTML = "You must use atleast eight characters.";
+            document.getElementById('submit_button').innerHTML = "<button type='submit' class='btn disabled'>Register</button>";
+        } else {
+            if ((password == firstname) || (password == lastname) || (password == username)) {
+                document.getElementById('password').style.border = '2px solid red';
+                document.getElementById('password_help').innerHTML = "You can not use firstname, username, lastname as a password.";
+                document.getElementById('submit_button').innerHTML = "<button type='submit' class='btn disabled'>Register</button>";
+            } else {
+                document.getElementById('password').style.border = '2px solid green';
+                document.getElementById('password_help').innerHTML = "";
+                document.getElementById('submit_button').innerHTML = "<button type='submit'>Register</button>"
+            }
+        }
+
+    }
+</script>

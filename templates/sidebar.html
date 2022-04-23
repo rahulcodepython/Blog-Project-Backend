@@ -1,0 +1,36 @@
+<div class="sidebar">
+    <h3 class="sidebar-title">Search</h3>
+    <div class="sidebar-item search-form">
+        <form action="{% url 'allblogposts' 'query' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="search_query" placeholder="Search Blog Titles" style="padding: 7px;">
+            <button type="submit"><i class="bi bi-search"></i></button>
+        </form>
+    </div><!-- End sidebar search formn-->
+
+    <h3 class="sidebar-title">Filter</h3>
+    <div class="sidebar-item tags">
+        <ul>
+            <li><a href="{% url 'allblogposts' 'new' %}">All<span>({{allblogs_count}})</span></a></li>
+            <li><a href="{% url 'allblogposts' 'new' %}">Newest<span></span></a></li>
+            <li><a href="{% url 'allblogposts' 'old' %}">Oldest<span></span></a></li>
+            {% for key,value in counts.items %}
+            <li><a href="{% url 'allblogposts' key %}">{{key}}<span>({{value}})</span></a></li>
+            {% endfor %}
+        </ul>
+    </div><!-- End sidebar tags-->
+
+    <h3 class="sidebar-title" style="margin-top: 2rem;">Recent Posts</h3>
+    <div class="sidebar-item recent-posts">
+        {% for blog in recent_blogs %}
+        <div class="post-item clearfix">
+            <img src="{{ blog.image.url }}" alt="">
+            <h4><a href="{% url 'blogcontent' blog.id_no %}">{{ blog.title }}</a></h4>
+            <time style="font-size: 14px;">
+                {{ blog.date }} ({{ blog.author.first_name | capfirst }} {{ blog.author.last_name | capfirst }})
+            </time>
+        </div>
+        {% endfor %}
+    </div><!-- End sidebar recent posts-->
+
+</div><!-- End sidebar -->

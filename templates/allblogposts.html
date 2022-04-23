@@ -1,0 +1,75 @@
+{% extends 'base.html' %} {% load static %}
+
+<!-- Other Block Starts -->
+{% block title %} Blogs {% endblock title %} {% block meta_desc %} {% endblock meta_desc %} {% block meta_keyword %} {% endblock meta_keyword %} {% block image_name %} {{ user_info.userimage.url }} {% endblock image_name %}
+<!-- Other Block Ends -->
+
+<!-- Main Block Starts -->
+{% block body %}
+
+<main id="main" class="my-5">
+    <!-- ======= Blog Section ======= -->
+    <section id="blog" class="blog">
+        <div class="container" data-aos="fade-up">
+            <div class="row">
+                <div class="col-lg-8 entries">
+                    {% if blogs.count == 0 %}
+                    <p style="height: 79px; top: 177px; font-style: normal; font-weight: 200; font-size: 35px; line-height: 48px; display: flex; align-items: center; text-align: center; color: #013289;">
+                        There is no blog available on this category now.
+                    </p>
+                    {% else %} {% for blog in blogs %}
+                    <!-- Starts Blog Entry -->
+                    <article class="entry">
+                        <div class="entry-img">
+                            <img src="{{ blog.image.url }}" alt="" class="img-fluid" width="1296" height="440"
+                                style="object-fit: cover" />
+                        </div>
+                        <h2 class="entry-title">
+                            <a href="#">{{ blog.title }}</a>
+                        </h2>
+                        <div class="entry-meta">
+                            <ul>
+                                <li class="d-flex align-items-center">
+                                    <i class="bi bi-person"></i>
+                                    <a href="#">{{ blog.author | capfirst }}</a>
+                                </li>
+                                <li class="d-flex align-items-center">
+                                    <i class="bi bi-clock"></i>
+                                    <a href="#"><time datetime="2020-01-01">{{ blog.date }}</time></a>
+                                </li>
+                                <li class="d-flex align-items-center">
+                                    <i class="bi bi-tags"></i> <a href="#">{{ blog.category }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="entry-content">
+                            <p>{{ blog.content | truncatechars:100 | safe }}</p>
+                            <div class="read-more">
+                                <a href="{% url 'blogcontent' blog.slug %}">Read More</a>
+                            </div>
+                        </div>
+                    </article>
+                    <!-- End blog entry -->
+                    {% endfor %} {% endif %}
+
+                    <div class="blog-pagination">
+                        <ul class="justify-content-center">
+                            {% comment %}
+                            <li><a href="# ">1</a></li>
+                            <li class="active"><a href="# ">2</a></li>
+                            <li><a href="# ">3</a></li>
+                            {% endcomment %}
+                        </ul>
+                    </div>
+                </div>
+                <!-- End blog entries list -->
+                <div class="col-lg-4">{% include 'sidebar.html' %}</div>
+                <!-- End blog sidebar -->
+            </div>
+        </div>
+    </section>
+    <!-- End Blog Section -->
+</main>
+
+{% endblock body %}
+<!-- Main Block Ends -->
