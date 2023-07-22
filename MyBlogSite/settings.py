@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-mj2!ne&1b=a4p50*1juq%ue!e0u7fjdh!1bf84j&-)@uf_aad0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'home',
-    
+
 ]
 
 MIDDLEWARE = [
@@ -47,7 +47,7 @@ ROOT_URLCONF = 'MyBlogSite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates")],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -115,15 +115,15 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# -----------------------------------Codes written by me---------------------------------------
+# ----------------------------------- Codes written by me ---------------------------------------
 
 # Handaling Media Files
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Handaling Static Files
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static")
+    BASE_DIR / 'static'
 ]
 
 # Handaling Messages
