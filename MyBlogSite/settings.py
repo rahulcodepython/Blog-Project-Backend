@@ -15,7 +15,7 @@ SECRET_KEY = "django-insecure-mj2!ne&1b=a4p50*1juq%ue!e0u7fjdh!1bf84j&-)@uf_aad0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -108,9 +108,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = "static/"
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles_build", "static")
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directory for collected static files
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Additional directories to search for static files
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -124,7 +125,7 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 # Handaling Static Files
-STATICFILES_DIRS = [BASE_DIR / "static"]
+# STATICFILES_DIRS = BASE_DIR / "static"
 
 # Handaling Messages
 MESSAGE_TAGS = {messages.ERROR: "danger"}
