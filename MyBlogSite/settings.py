@@ -13,9 +13,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-mj2!ne&1b=a4p50*1juq%ue!e0u7fjdh!1bf84j&-)@uf_aad0"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -60,7 +60,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "MyBlogSite.wsgi.app"
+WSGI_APPLICATION = "MyBlogSite.wsgi.application"
 
 
 # Database
@@ -108,9 +108,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directory for collected static files
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Additional directories to search for static files
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "static")  # Directory for collected static files
 
 
 # Default primary key field type

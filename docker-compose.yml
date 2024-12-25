@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+    backend:
+        build:
+            context: . # Use the current directory as the build context
+            dockerfile: Dockerfile
+        container_name: backend
+        ports:
+            # Internal only, not exposed to the host
+            - "8000:8000"
+        networks:
+            - app-network
+        volumes:
+            - static_volume:/app/static
+            - media_volume:/app/media
+
+    nginx:
+        build:
+            context: ./Nginx # Use the current directory as the build context
+            dockerfile: Dockerfile
+        container_name: nginx
+        ports:
+            - "80:80" # Expose only Nginx on host
+        networks:
+            - app-network
+        volumes:
+            - static_volume:/app/static
+            - media_volume:/app/media
+
+networks:
+    app-network:
+        driver: bridge
+
+volumes:
+    static_volume:
+    media_volume:
